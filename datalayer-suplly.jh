@@ -1,0 +1,98 @@
+/*
+工厂信息
+*/
+entity Factory {
+	name String required,
+    description String,
+    scale String,
+    location String required,    
+    status String required,
+}
+
+/*
+产品：口罩，防护服，消毒水
+*/
+entity Product {
+	name String required,
+    description String, 
+    capacity Instant required,
+    planCapacity Instant required,
+    classification String
+}
+
+/*
+计件数，电流
+*/
+entity Observation {
+	phenomenonTime ZonedDateTime,
+    result String required,
+    resultTime ZonedDateTime required,
+    property String required,
+    unitOfMeasurement String,
+    productionLine String,
+}
+
+/*
+KPI
+*/
+entity Kpi {
+	phenomenonTime ZonedDateTime,
+    result String required,
+    resultTime ZonedDateTime required,
+    beginTime ZonedDateTime,
+    endTime ZonedDateTime,
+    unitOfMeasurement String
+}
+
+/*
+Alarm
+*/
+entity Alarm {
+	phenomenonTime ZonedDateTime,
+    result String required,
+    resultTime ZonedDateTime required,
+    description String,
+    level String,
+    status String,
+    resolveTime ZonedDateTime
+}
+
+/*
+Map
+*/
+entity Map {
+	name String,
+    deviceId String required,
+    description String
+}
+
+
+relationship OneToMany {
+    Factory{product(name)} to Product{factory(name) required} 
+}
+
+relationship OneToMany {
+    Product{observation(name)} to Observation{product(name) required}
+}
+
+relationship OneToMany {
+    Product{kpi(name)} to Kpi{product(name) required}
+}
+
+relationship OneToMany {
+	Factory{alarm(name)} to Alarm{Factory(name)} 
+}
+
+relationship OneToMany {
+    Product{map(name)} to Map{product(name) required}
+}
+
+relationship OneToMany {
+    Map{observation(name)} to Observation{map(name) required}
+}
+paginate Factory with pagination
+service all with serviceImpl
+dto * with mapstruct
+
+
+
